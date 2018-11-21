@@ -9,7 +9,7 @@ import socketserver
 
 try:
     IP:  sys.argv[1]
-    PORT: sys.argv[2]
+    PORT: int(sys.argv[2])
     AUDIO: sys.argv[3]
 
 except UsageError:

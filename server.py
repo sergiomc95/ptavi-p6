@@ -6,11 +6,12 @@ Clase (y programa principal) para un servidor de eco en UDP simple
 
 import sys
 import socketserver
+import os
 
 try:
-    IP:  sys.argv[1]
-    PORT: int(sys.argv[2])
-    AUDIO: sys.argv[3]
+    IP =  sys.argv[1]
+    PORT = int(sys.argv[2])
+    AUDIO = sys.argv[3]
 
 except UsageError:
     print("Usage: python server.py IP port audio_file")
@@ -34,6 +35,10 @@ class EchoHandler(socketserver.DatagramRequestHandler):
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
-    serv = socketserver.UDPServer(('', 6001), EchoHandler)
-    print("Lanzando servidor UDP de eco...")
+    if not os.path.exists(AUDIO):
+        raise OSError
+    if len(sys.argv) != 4:
+        raise IndexError
+    serv = socketserver.UDPServer((IP, int(PORT)), EchoHandler)
+    print("Listening....")
     serv.serve_forever()

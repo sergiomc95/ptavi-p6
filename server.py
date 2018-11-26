@@ -9,12 +9,13 @@ import socketserver
 import os
 
 try:
-    IP =  sys.argv[1]
+    IP = sys.argv[1]
     PORT = int(sys.argv[2])
     AUDIO = sys.argv[3]
 
 except UsageError:
     print("Usage: python server.py IP port audio_file")
+
 
 class EchoHandler(socketserver.DatagramRequestHandler):
     """
@@ -31,12 +32,13 @@ class EchoHandler(socketserver.DatagramRequestHandler):
             METODO = linea.split(' ')[0]
             print("El cliente nos manda " + linea)
 
-                            # Si no hay más líneas salimos del bucle infinito
             if not line:
                 break
             if METODO == 'INVITE':
                 print("El cliente nos manda" + line.decode('utf-8'))
-                self.wfile.write(b"SIP/2.0 100 Trying\r\n\r\n" + b"SIP/2.0 180 Ring\r\n\r\n" + b"SIP/2.0 200 OK\r\n\r\n" )
+                self.wfile.write(b"SIP/2.0 100 Trying\r\n\r\n" +
+                                 b"SIP/2.0 180 Ring\r\n\r\n" +
+                                 b"SIP/2.0 200 OK\r\n\r\n")
 
             elif METODO == 'ACK':
                 aEjecutar = 'mp32rtp -i 127.0.0.1 -p 23032 < ' + AUDIO
@@ -50,6 +52,7 @@ class EchoHandler(socketserver.DatagramRequestHandler):
         else:
             self.wfile.write(b"SIP/2.0 400 Bad Request")
     # Si no hay más líneas salimos del bucle infinito
+
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos

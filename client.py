@@ -29,7 +29,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     data = my_socket.recv(1024)
     cien = data.decode('utf-8').split(' ')[1]
     if cien == '100':
-        print('HOLAAAAAA')
         LINE = 'ACK sip:' + NOMBRE + '@' + IP + ':' + str(PORT) + ' SIP/2.0'
         my_socket.send(bytes(LINE, 'utf-8') + b'\r\n\r\n')
 

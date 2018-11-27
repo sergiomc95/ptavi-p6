@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Clase (y programa principal) para un servidor de eco en UDP simple
-"""
+"""Clase (y programa principal) para un servidor de eco en UDP simple."""
 
 import sys
 import socketserver
@@ -18,14 +16,11 @@ except UsageError:
 
 
 class EchoHandler(socketserver.DatagramRequestHandler):
-    """
-    Echo server class
-    """
+    """Echo server class."""
 
     def handle(self):
-
+        """handle."""
         while 1:
-            # Leyendo línea a línea lo que nos envía el cliente
             METODOS = ['INVITE', 'ACK', 'BYE']
             line = self.rfile.read()
             linea = line.decode('utf-8')
@@ -47,15 +42,13 @@ class EchoHandler(socketserver.DatagramRequestHandler):
 
             elif METODO == 'BYE':
                 self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
-            else:
+            elif METODO not in METODOS:
                 self.wfile.write(b"SIP/2.0 405 Method Not Allowed\r\n\r\n")
-        else:
-            self.wfile.write(b"SIP/2.0 400 Bad Request")
-    # Si no hay más líneas salimos del bucle infinito
+            else:
+                self.wfile.write(b"SIP/2.0 400 Bad Request")
 
 
 if __name__ == "__main__":
-    # Creamos servidor de eco y escuchamos
     if not os.path.exists(AUDIO):
         raise OSError
     if len(sys.argv) != 4:
